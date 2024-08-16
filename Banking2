@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Banking Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"], input[type="password"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #balance {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        #transfer {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Banking Website</h1>
+
+    <div id="login-container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <div id="account-container" style="display: none;">
+        <h2>Account Information</h2>
+        <div id="balance">
+            Your balance: <span id="balance-value"></span>
+        </div>
+        <div id="transfer">
+            <h3>Transfer Funds</h3>
+            <form id="transfer-form">
+                <label for="recipient">Recipient Account:</label>
+                <input type="text" id="recipient" name="recipient" required>
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount" min="1" required>
+                <button type="submit">Transfer</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Simulated user data
+        const users = [
+            { username: 'user1', password: 'password1', balance: 1000 },
+            { username: 'user2', password: 'password2', balance: 500 },
+            // Add more users as needed
+        ];
+
+        // Login functionality
+        const loginForm = document.getElementById('login-form');
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const user = users.find(user => user.username === username && user.password === password);
+            if (user) {
+                // Display account information and hide login form
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('account-container').style.display = 'block';
+                document.getElementById('balance-value').textContent = user.balance;
+            } else {
+                alert('Invalid username or password');
+            }
+        });
+
+        // Transfer funds functionality
+        const transferForm = document.getElementById('transfer-form');
+        transferForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const recipient = document.getElementById('recipient').value;
+            const amount = parseInt(document.getElementById('amount').value);
+
+            // Find the current user's balance
+            const currentUser = users.find(user => user.username === username);
+            if (currentUser.balance >= amount) {
+                // Update the current user's balance
+                currentUser.balance -= amount;
+                // Update the recipient's balance (assuming the recipient exists in the users array)
+                const recipientUser = users.find(user => user.username === recipient);
+                if (recipientUser) {
+                    recipientUser.balance += amount;
+                    alert('Funds transferred successfully');
+                } else {
+                    alert('Recipient account not found');
+                }
+                // Update the balance display
+                document.getElementById('balance-value').textContent = currentUser.balance;
+            } else {
+                alert('Insufficient balance');
+            }
+        });
+    </script>
+</body>
+</html>
